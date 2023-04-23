@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: bitnami_myapp
+      MYSQL_USER: bn_myapp
+      MYSQL_PASSWORD: example
+  myapp:
+    image: docker.io/bitnami/laravel:10
+    ports:
+      - ${VITE_PORT:-5173}:${VITE_PORT:-5173}
+      - '8000:8000'
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=bn_myapp
+      - DB_PASSWORD=example
+      - DB_DATABASE=bitnami_myapp
+    volumes:
+      - './my-project:/app'
+    depends_on:
+      - mysql
